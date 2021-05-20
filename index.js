@@ -24,7 +24,7 @@ app.post("/", async function (req, res, next) {
     const saludcard = [];
     content.forEach((people, indexpeople) => {
         //console.log(zfill(indexpeople + 1, 5)); // 324
-        if (people.T !== "SI") return false;
+        //if (people.T !== "SI") return false;
         const beneficiarios = [];
         const beneficiario = {
             nombre: prilemayuscula(`${people.A}`),
