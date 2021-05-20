@@ -7,7 +7,7 @@ var port = process.env.PORT || 8080;
 
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
-app.use(express.static("public"));
+app.use(express.static("app/build"));
 app.use(
     fileUpload({
         useTempFiles: true,
@@ -15,12 +15,11 @@ app.use(
     }),
 );
 app.post("/pdf", async function (req, res, next) {
-    //const saludcard = req.body;
     const result = excelToJson({
-        sourceFile: req.files.fileUploaded.tempFilePath,
+        sourceFile: req.files.file.tempFilePath,
     });
     const [header, ...content] = result.Sheet1;
-    console.log(header);
+    //console.log(header);
     const saludcard = [];
     content.forEach((people, indexpeople) => {
         //console.log(zfill(indexpeople + 1, 5)); // 324
