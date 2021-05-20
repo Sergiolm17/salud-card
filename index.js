@@ -16,7 +16,6 @@ app.use(
 );
 app.post("/pdf", async function (req, res, next) {
     //const saludcard = req.body;
-    console.log(req.files);
     const result = excelToJson({
         sourceFile: req.files.fileUploaded.tempFilePath,
     });
@@ -26,7 +25,6 @@ app.post("/pdf", async function (req, res, next) {
     content.forEach((people, indexpeople) => {
         //console.log(zfill(indexpeople + 1, 5)); // 324
         if (people.T !== "SI") return false;
-        console.log(people);
         const beneficiarios = [];
         const beneficiario = {
             nombre: prilemayuscula(`${people.A}`),
