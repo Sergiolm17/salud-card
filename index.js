@@ -17,7 +17,7 @@ app.use(
 app.post("/pdf", async function (req, res, next) {
     console.log(req.files);
     const result = excelToJson({
-        sourceFile: req.files.file.tempFilePath,
+        sourceFile: req.files.fileUploaded.tempFilePath,
     });
     const [header, ...content] = result.Sheet1;
     //console.log(header);
