@@ -14,7 +14,7 @@ app.use(
         tempFileDir: "/tmp/",
     }),
 );
-app.post("/pdf", async function (req, res, next) {
+app.post("/", async function (req, res, next) {
     console.log(req.files);
     const result = excelToJson({
         sourceFile: req.files.fileUploaded.tempFilePath,

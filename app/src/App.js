@@ -14,7 +14,7 @@ function App() {
                 >
                     <form
                         method="post"
-                        action="pdf"
+                        action="/"
                         encType="multipart/form-data"
                     >
                         <FormField
