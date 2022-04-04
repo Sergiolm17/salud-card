@@ -12,7 +12,7 @@ app.use(
     fileUpload({
         useTempFiles: true,
         tempFileDir: "/tmp/",
-    }),
+    })
 );
 app.post("/", async function (req, res, next) {
     console.log(req.files);
@@ -25,6 +25,8 @@ app.post("/", async function (req, res, next) {
     content.forEach((people, indexpeople) => {
         //console.log(zfill(indexpeople + 1, 5)); // 324
         //if (people.T !== "SI") return false;
+        //console.log(people);
+
         const beneficiarios = [];
         const beneficiario = {
             nombre: prilemayuscula(`${people.A}`),
@@ -43,7 +45,7 @@ app.post("/", async function (req, res, next) {
         //conyugue
         if (validator(people.L, people.M))
             beneficiarios.push(
-                addbeneficiario(people.L, people.M, "Esposo(a) o Cónyuge"),
+                addbeneficiario(people.L, people.M, "Esposo(a) o Cónyuge")
             );
         //HIJO 1
         if (validator(people.N, people.O))
@@ -56,24 +58,16 @@ app.post("/", async function (req, res, next) {
         if (validator(people.R, people.S))
             beneficiarios.push(addbeneficiario(people.R, people.S, "Hijo(a)"));
 
-        let data1 = beneficiarios.filter((data1, i) => {
-            if (i == 0 || i == 1 || i == 2) return true;
-            else return false;
-        });
-        let data2 = beneficiarios.filter((data1, i) => {
-            if (i == 3 || i == 4 || i == 5) return true;
-            else return false;
-        });
+        let data1 = beneficiarios;
 
         saludcard.push({
             data: beneficiario,
             data1,
-            data2,
         });
     });
     const cardsize = {
-        with: cmToPt(8.66),
-        height: cmToPt(5.41),
+        with: cmToPt(5.41),
+        height: cmToPt(8.66),
     };
 
     options = {
@@ -104,7 +98,7 @@ app.post("/", async function (req, res, next) {
     const carta1 = {
         x: 0,
         y: 0,
-        marginleft: 17,
+        marginleft: 13,
     };
     const carta2 = {
         x: 0,
@@ -119,63 +113,69 @@ app.post("/", async function (req, res, next) {
             height: cardsize.height,
         });
 
-        doc.fillColor("#153e6b")
-            .font("fonts/OpenSans-Bold.ttf")
-            .fontSize(12)
-            .text("Titular:", carta1.x + carta1.marginleft, carta1.y + 15);
         //doc.moveDown();
         doc.fillColor("#0e4e99")
             .font("fonts/OpenSans-Regular.ttf")
-            .fontSize(9.5)
+            .fontSize(8)
             .text(
                 element.data.nombre,
                 carta1.x + carta1.marginleft,
-                carta1.y + 31.3,
+                carta1.y + 80,
                 {
                     align: "left",
                     continued: false,
-                },
+                }
             );
         doc.moveDown();
 
         doc.fillColor("#153e6b")
             .font("fonts/OpenSans-Bold.ttf")
-            .fontSize(12)
-            .text("DNI:", carta1.x + carta1.marginleft, carta1.y + 45, {
+            .fontSize(9)
+            .text("DNI:", carta1.x + carta1.marginleft, carta1.y + 94, {
                 continued: false,
             });
 
         doc.fillColor("#0e4e99")
             .font("fonts/OpenSans-Regular.ttf")
-            .fontSize(8)
-            .text(element.data.dni, carta1.x + 46, carta1.y + 48, {
-                continued: false,
-            });
+            .fontSize(6)
+            .text(
+                element.data.dni,
+                carta1.x + carta1.marginleft + 19,
+                carta1.y + 97,
+                {
+                    continued: false,
+                }
+            );
 
         doc.fillColor("#153e6b")
             .font("fonts/OpenSans-Bold.ttf")
-            .fontSize(12)
-            .text("Área:", carta1.x + 90, carta1.y + 45, {
+            .fontSize(9)
+            .text("Área:", carta1.x + carta1.marginleft + 52, carta1.y + 94, {
                 continued: false,
             });
 
         doc.fillColor("#0e4e99")
             .font("fonts/OpenSans-Regular.ttf")
-            .fontSize(8)
-            .text(element.data.area, carta1.x + 124, carta1.y + 48, {
-                continued: false,
-            });
+            .fontSize(6)
+            .text(
+                element.data.area,
+                carta1.x + carta1.marginleft + 78,
+                carta1.y + 97,
+                {
+                    continued: false,
+                }
+            );
         doc.fillColor("#0e4e99")
             .font("fonts/OpenSans-Regular.ttf")
-            .fontSize(8)
+            .fontSize(7)
             .text(
                 `${element.data.condi}-${element.data.code}`,
-                carta1.x + 195,
-                carta1.y + 83,
+                carta1.x + 110,
+                carta1.y + 9,
                 {
                     align: "left",
                     continued: false,
-                },
+                }
             );
 
         //////////////////////////////////////////////////
@@ -187,16 +187,16 @@ app.post("/", async function (req, res, next) {
             width: cardsize.with,
             height: cardsize.height,
         });
-        if (element.data1.length == 0 && element.data2.length == 0) {
+        if (element.data1.length == 0) {
         } else {
             doc.fillColor("#153e6b")
                 .font("fonts/OpenSans-Bold.ttf")
-                .fontSize(12)
+                .fontSize(14)
                 .text(
                     "Beneficiarios:",
                     carta2.x + carta2.marginleft,
-                    carta2.y + 12,
-                    {},
+                    carta2.y + 15,
+                    {}
                 );
         }
 
@@ -207,11 +207,11 @@ app.post("/", async function (req, res, next) {
                 .text(
                     beneficiario.nombre,
                     carta2.x + carta2.marginleft,
-                    carta2.y + 31.3 + id * carta2.gap,
+                    carta2.y + 40 + id * carta2.gap,
                     {
                         align: "left",
                         continued: false,
-                    },
+                    }
                 );
             doc.moveDown();
 
@@ -221,10 +221,10 @@ app.post("/", async function (req, res, next) {
                 .text(
                     "DNI:",
                     carta2.x + carta2.marginleft,
-                    carta2.y + 42 + id * carta2.gap,
+                    carta2.y + 50 + id * carta2.gap,
                     {
                         continued: false,
-                    },
+                    }
                 );
             doc.fillColor("#153e6b")
                 .font("fonts/OpenSans-Bold.ttf")
@@ -232,10 +232,10 @@ app.post("/", async function (req, res, next) {
                 .text(
                     "|  " + beneficiario.posicion,
                     carta2.x + carta2.marginleft + 53,
-                    carta2.y + 42 + id * carta2.gap,
+                    carta2.y + 50 + id * carta2.gap,
                     {
                         continued: false,
-                    },
+                    }
                 );
 
             doc.fillColor("#0e4e99")
@@ -243,60 +243,11 @@ app.post("/", async function (req, res, next) {
                 .fontSize(6.7)
                 .text(
                     beneficiario.dni,
-                    carta2.x + 33,
-                    carta2.y + 42 + id * carta2.gap,
+                    carta2.x + 32,
+                    carta2.y + 50 + id * carta2.gap,
                     {
                         continued: false,
-                    },
-                );
-        });
-        element.data2.forEach((beneficiario, id) => {
-            doc.fillColor("#0e4e99")
-                .font("fonts/OpenSans-Regular.ttf")
-                .fontSize(6.35)
-                .text(
-                    beneficiario.nombre,
-                    carta2.x + carta2.marginleft + carta2.gapy,
-                    carta2.y + 31.3 + id * carta2.gap,
-                    {
-                        align: "left",
-                        continued: false,
-                    },
-                );
-
-            doc.fillColor("#153e6b")
-                .font("fonts/OpenSans-Bold.ttf")
-                .fontSize(6.7)
-                .text(
-                    "DNI:",
-                    carta2.x + carta2.marginleft + carta2.gapy,
-                    carta2.y + 42 + id * carta2.gap,
-                    {
-                        continued: false,
-                    },
-                );
-            doc.fillColor("#153e6b")
-                .font("fonts/OpenSans-Bold.ttf")
-                .fontSize(6.7)
-                .text(
-                    "|  " + beneficiario.posicion,
-                    carta2.x + carta2.marginleft + 53 + carta2.gapy,
-                    carta2.y + 42 + id * carta2.gap,
-                    {
-                        continued: false,
-                    },
-                );
-
-            doc.fillColor("#0e4e99")
-                .font("fonts/OpenSans-Regular.ttf")
-                .fontSize(6.7)
-                .text(
-                    beneficiario.dni,
-                    carta2.x + 33 + carta2.gapy,
-                    carta2.y + 42 + id * carta2.gap,
-                    {
-                        continued: false,
-                    },
+                    }
                 );
         });
 

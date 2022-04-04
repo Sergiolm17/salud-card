@@ -32,6 +32,7 @@ console.log(header);
 const saludcard = [];
 content.forEach((people, indexpeople) => {
     //console.log(zfill(indexpeople + 1, 5)); // 324
+    console.log(people);
     if (people.T !== "SI") return false;
     console.log(people);
     const beneficiarios = [];
@@ -52,7 +53,7 @@ content.forEach((people, indexpeople) => {
     //conyugue
     if (validator(people.L, people.M))
         beneficiarios.push(
-            addbeneficiario(people.L, people.M, "Esposo(a) o Cónyuge"),
+            addbeneficiario(people.L, people.M, "Esposo(a) o Cónyuge")
         );
     //HIJO 1
     if (validator(people.N, people.O))

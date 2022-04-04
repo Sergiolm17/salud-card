@@ -4,12 +4,16 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "dev": "nodemon index.js"
     },
     "dependencies": {
         "convert-excel-to-json": "^1.7.0",
         "express": "^4.17.1",
         "express-fileupload": "^1.2.1",
         "pdfkit": "^0.12.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
     }
 }
